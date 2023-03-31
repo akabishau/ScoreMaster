@@ -17,6 +17,7 @@
 		5B7A362E29D5CB4700FF1BAF /* StatsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A362D29D5CB4700FF1BAF /* StatsVC.swift */; };
 		5B7A363129D649B900FF1BAF /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A363029D649B900FF1BAF /* PlayerCell.swift */; };
 		5B7A363329D64CC700FF1BAF /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A363229D64CC700FF1BAF /* Player.swift */; };
+		5B7A363629D7290500FF1BAF /* Players.json in Resources */ = {isa = PBXBuildFile; fileRef = 5B7A363529D7290500FF1BAF /* Players.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		5B7A362D29D5CB4700FF1BAF /* StatsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsVC.swift; sourceTree = "<group>"; };
 		5B7A363029D649B900FF1BAF /* PlayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
 		5B7A363229D64CC700FF1BAF /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		5B7A363529D7290500FF1BAF /* Players.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Players.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 		5B7A362229D51F8800FF1BAF /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5B7A363429D728A600FF1BAF /* Data */,
 				5B7A363229D64CC700FF1BAF /* Player.swift */,
 			);
 			path = Model;
@@ -117,6 +120,14 @@
 				5B7A363029D649B900FF1BAF /* PlayerCell.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		5B7A363429D728A600FF1BAF /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				5B7A363529D7290500FF1BAF /* Players.json */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +188,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B7A363629D7290500FF1BAF /* Players.json in Resources */,
 				5B7A361729D51F6700FF1BAF /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

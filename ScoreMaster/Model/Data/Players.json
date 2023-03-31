@@ -1,0 +1,52 @@
+[
+	{
+		"name": "John Smith",
+		"avatar": "https://example.com/avatar1.jpg",
+		"email": "john.smith@example.com"
+	},
+	{
+		"name": "Jane Doe",
+		"avatar": "https://example.com/avatar2.jpg",
+		"email": "jane.doe@example.com"
+	},
+	{
+		"name": "Bob Johnson",
+		"avatar": "https://example.com/avatar3.jpg",
+		"email": "bob.johnson@example.com"
+	},
+	{
+		"name": "Emily Lee",
+		"avatar": "https://example.com/avatar4.jpg",
+		"email": "emily.lee@example.com"
+	},
+	{
+		"name": "Michael Kim",
+		"avatar": "https://example.com/avatar5.jpg",
+		"email": "michael.kim@example.com"
+	},
+	{
+		"name": "Sara Rodriguez",
+		"avatar": "https://example.com/avatar6.jpg",
+		"email": "sara.rodriguez@example.com"
+	},
+	{
+		"name": "David Chen",
+		"avatar": "https://example.com/avatar7.jpg",
+		"email": "david.chen@example.com"
+	},
+	{
+		"name": "Rachel Wong",
+		"avatar": "https://example.com/avatar8.jpg",
+		"email": "rachel.wong@example.com"
+	},
+	{
+		"name": "Alex Martinez",
+		"avatar": "https://example.com/avatar9.jpg",
+		"email": "alex.martinez@example.com"
+	},
+	{
+		"name": "Lisa Patel",
+		"avatar": "https://example.com/avatar10.jpg",
+		"email": "lisa.patel@example.com"
+	}
+]

@@ -10,13 +10,31 @@ import UIKit
 class PlayersVC: UIViewController {
 		
 	private let tableView = UITableView()
-	private var players: [Player] = [Player(name: "Dasha", avatar: ""), Player(name: "Lesha", avatar: ""), Player(name: "Maks", avatar: ""), Player(name: "Anya", avatar: "")]
+	private var players: [Player] = []
 	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		configureTableView()
+		getPlayers()
+	}
+	
+	
+	private func getPlayers() {
+		if let path = Bundle.main.path(forResource: "Players", ofType: "json") {
+			do {
+				let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+				players = try JSONDecoder().decode([Player].self, from: data)
+				tableView.reloadData()
+				
+			} catch {
+				print("Error decoding local JSON file: \(error)")
+			}
+		} else {
+			print("Local JSON file not found.")
+		}
+
 	}
 	
 	

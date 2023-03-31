@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Player {
+struct Player: Decodable {
 	let name: String
 	let avatar: String
+	let email: String
 }
