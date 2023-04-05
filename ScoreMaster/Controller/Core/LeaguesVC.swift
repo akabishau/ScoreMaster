@@ -11,7 +11,7 @@ class LeaguesVC: UIViewController {
 	
 	private let tableView = UITableView()
 	
-	private var leagues: [String] = ["46 Seconds", "Friday Fun", "People of Apex"]
+	private var leagues: [League] = [League(name: "46 Seconds", players: []), League(name: "Friday Fun", players: []), League(name: "People of Apex", players: [])]
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -44,7 +44,7 @@ extension LeaguesVC: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "basicStyle", for: indexPath)
-		cell.textLabel?.text = leagues[indexPath.row]
+		cell.textLabel?.text = leagues[indexPath.row].name
 		return cell
 	}
 }
