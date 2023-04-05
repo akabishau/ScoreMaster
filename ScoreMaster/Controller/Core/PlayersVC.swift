@@ -16,6 +16,7 @@ class PlayersVC: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		configureViewController()
 		configureTableView()
 		getPlayers()
 	}
@@ -48,6 +49,20 @@ class PlayersVC: UIViewController {
 		
 		tableView.register(PlayerCell.self, forCellReuseIdentifier: PlayerCell.reuseId)
 	}
+	
+	
+	private func configureViewController() {
+		let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+		navigationItem.rightBarButtonItem = addButton
+	}
+	
+	
+	@objc private func addButtonTapped() {
+		let addPlayerVC = AddPlayerVC()
+		addPlayerVC.delegate = self
+		let navigationController = UINavigationController(rootViewController: addPlayerVC)
+		present(navigationController, animated: true)
+	}
 }
 
 
@@ -68,5 +83,14 @@ extension PlayersVC: UITableViewDataSource {
 extension PlayersVC: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
+	}
+}
+
+
+extension PlayersVC: AddPlayerVCDelegate {
+	func didAddPlayer(_ player: Player) {
+		print(#function)
+		players.append(player)
+		tableView.reloadData()
 	}
 }

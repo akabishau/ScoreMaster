@@ -22,6 +22,10 @@
 		5B7A363A29D72EA500FF1BAF /* Games.json in Resources */ = {isa = PBXBuildFile; fileRef = 5B7A363929D72EA500FF1BAF /* Games.json */; };
 		5B7A363C29D7304900FF1BAF /* GameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A363B29D7304900FF1BAF /* GameCell.swift */; };
 		5B7A363E29DDCFDA00FF1BAF /* LeaguesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A363D29DDCFDA00FF1BAF /* LeaguesVC.swift */; };
+		5B7A364029DDEC6500FF1BAF /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A363F29DDEC6500FF1BAF /* League.swift */; };
+		5B7A364229DDF1C300FF1BAF /* AddPlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A364129DDF1C300FF1BAF /* AddPlayerVC.swift */; };
+		5B7A364429DDF66900FF1BAF /* SMButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A364329DDF66900FF1BAF /* SMButton.swift */; };
+		5B7A364629DDF76D00FF1BAF /* SMTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A364529DDF76D00FF1BAF /* SMTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +48,8 @@
 		5B7A363D29DDCFDA00FF1BAF /* LeaguesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaguesVC.swift; sourceTree = "<group>"; };
 		5B7A363F29DDEC6500FF1BAF /* League.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = League.swift; sourceTree = "<group>"; };
 		5B7A364129DDF1C300FF1BAF /* AddPlayerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerVC.swift; sourceTree = "<group>"; };
+		5B7A364329DDF66900FF1BAF /* SMButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMButton.swift; sourceTree = "<group>"; };
+		5B7A364529DDF76D00FF1BAF /* SMTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +139,8 @@
 			children = (
 				5B7A363029D649B900FF1BAF /* PlayerCell.swift */,
 				5B7A363B29D7304900FF1BAF /* GameCell.swift */,
+				5B7A364329DDF66900FF1BAF /* SMButton.swift */,
+				5B7A364529DDF76D00FF1BAF /* SMTextField.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -222,6 +230,7 @@
 				5B7A363829D72E7E00FF1BAF /* Game.swift in Sources */,
 				5B7A361229D51F6600FF1BAF /* MainTabBarController.swift in Sources */,
 				5B7A363C29D7304900FF1BAF /* GameCell.swift in Sources */,
+				5B7A364629DDF76D00FF1BAF /* SMTextField.swift in Sources */,
 				5B7A362A29D5CB3200FF1BAF /* PlayersVC.swift in Sources */,
 				5B7A364029DDEC6500FF1BAF /* League.swift in Sources */,
 				5B7A364229DDF1C300FF1BAF /* AddPlayerVC.swift in Sources */,
@@ -231,6 +240,7 @@
 				5B7A362E29D5CB4700FF1BAF /* StatsVC.swift in Sources */,
 				5B7A363329D64CC700FF1BAF /* Player.swift in Sources */,
 				5B7A362629D5CAD400FF1BAF /* OverviewVC.swift in Sources */,
+				5B7A364429DDF66900FF1BAF /* SMButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
