@@ -13,7 +13,7 @@ class MainTabBarController: UITabBarController {
 		super.viewDidLoad()
 		
 		configureAppAppearance()
-		viewControllers = [createOverviewNC(), createPlayersNC(), createGamesNC(), createStatsNC()]
+		viewControllers = [createOverviewNC(), createPlayersNC(), createGamesNC(), createStatsNC(), createLeagueNC(),]
 	}
 	
 	
@@ -50,6 +50,15 @@ class MainTabBarController: UITabBarController {
 		statsVC.view.backgroundColor = .systemBackground
 		statsVC.tabBarItem = UITabBarItem(title: "Stats", image: UIImage(systemName: "chart.bar.doc.horizontal"), tag: 3)
 		return UINavigationController(rootViewController: statsVC)
+	}
+	
+	
+	private func createLeagueNC() -> UINavigationController {
+		let leaguesVC = LeaguesVC()
+		leaguesVC.title = "Leagues"
+		leaguesVC.view.backgroundColor = .systemBackground
+		leaguesVC.tabBarItem = UITabBarItem(title: "Leagues", image: UIImage(systemName: "person.3"), tag: 4)
+		return UINavigationController(rootViewController: leaguesVC)
 	}
 	
 	
