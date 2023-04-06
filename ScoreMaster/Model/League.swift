@@ -9,5 +9,5 @@ import Foundation
 
 struct League {
 	let name: String
-	let players: [Player]
+	var players: [Player]
 }
