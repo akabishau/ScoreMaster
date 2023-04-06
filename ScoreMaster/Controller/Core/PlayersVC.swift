@@ -10,7 +10,7 @@ import UIKit
 class PlayersVC: UIViewController {
 		
 	private let tableView = UITableView()
-	private var players: [Player] = []
+	private let dataManager = DataManager.shared
 	
 	
 	override func viewDidLoad() {
@@ -18,22 +18,32 @@ class PlayersVC: UIViewController {
 		
 		configureViewController()
 		configureTableView()
-		getPlayers()
+		loadSamplePlayers()
 	}
 	
 	
-	private func getPlayers() {
-		PersistenceManager.retrievePlayers { [weak self] result in
-			guard let self = self else { return }
-			switch result {
-				case .success(let players):
-					self.players = players
-					self.tableView.reloadData()
-				case .failure(let error):
-					print("Error retrieving players: \(error.localizedDescription)")
+	private func loadSamplePlayers() {
+		if dataManager.players.isEmpty {
+			if let path = Bundle.main.path(forResource: "Players", ofType: "json") {
+				do {
+					let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+					dataManager.players = try JSONDecoder().decode([Player].self, from: data)
+					if let error = PersistenceManager.savePlayers() {
+						dataManager.players = []
+						print("Alert: Couldn't save Players Sample. Error: \(error)")
+					} else {
+						print("Players added from local json")
+						tableView.reloadData()
+					}
+				} catch {
+					print("Error decoding local JSON file: \(error)")
+				}
+			} else {
+				print("Local JSON file not found.")
 			}
 		}
 	}
+	
 	
 	
 	private func configureTableView() {
@@ -66,13 +76,13 @@ class PlayersVC: UIViewController {
 extension PlayersVC: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return players.count
+		return dataManager.players.count
 	}
 	
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.reuseId, for: indexPath) as! PlayerCell
-		cell.set(with: players[indexPath.row])
+		cell.set(with: dataManager.players[indexPath.row])
 		return cell
 	}
 }
@@ -87,9 +97,9 @@ extension PlayersVC: UITableViewDelegate {
 extension PlayersVC: AddPlayerVCDelegate {
 	
 	func didAddPlayer(_ player: Player) {
-		players.append(player)
-		if let error = PersistenceManager.save(players: players) {
-			players.removeLast() // undo previously appended local array of players
+		dataManager.players.append(player)
+		if let error = PersistenceManager.savePlayers() {
+			dataManager.players.removeLast()
 			print("Alert: Couldn't save the player. Error: \(error)")
 		} else {
 			print("New User Saved")

@@ -1,0 +1,42 @@
+[
+	{
+		"id": 1,
+		"name": "Fun People",
+		"players": [
+			{
+				"name": "Lesha",
+				"avatar": ""
+			},
+			{
+				"name": "Dasha",
+				"avatar": ""
+			},
+			{
+				"name": "Maksim",
+				"avatar": ""
+			}
+		]
+	},
+	{
+		"id": 2,
+		"name": "46 Seconds",
+		"players": [
+			{
+				"name": "Lesha",
+				"avatar": ""
+			},
+			{
+				"name": "Dasha",
+				"avatar": ""
+			},
+			{
+				"name": "Maksim",
+				"avatar": ""
+			},
+			{
+				"name": "Anya",
+				"avatar": ""
+			}
+		]
+	}
+]

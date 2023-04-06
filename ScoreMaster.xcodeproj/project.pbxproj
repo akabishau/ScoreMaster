@@ -27,6 +27,9 @@
 		5B7A364629DDF76D00FF1BAF /* SMTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A364529DDF76D00FF1BAF /* SMTextField.swift */; };
 		5B7A364829DE1F3300FF1BAF /* LeagueDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A364729DE1F3300FF1BAF /* LeagueDetailsVC.swift */; };
 		5B7A364B29DE519200FF1BAF /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A364A29DE519200FF1BAF /* PersistenceManager.swift */; };
+		5B7A365129DE669100FF1BAF /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A365029DE669100FF1BAF /* DataManager.swift */; };
+		5B7A365329DE792700FF1BAF /* Players.json in Resources */ = {isa = PBXBuildFile; fileRef = 5B7A365229DE792700FF1BAF /* Players.json */; };
+		5B7A365529DE797900FF1BAF /* Leagues.json in Resources */ = {isa = PBXBuildFile; fileRef = 5B7A365429DE797900FF1BAF /* Leagues.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +55,9 @@
 		5B7A364529DDF76D00FF1BAF /* SMTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTextField.swift; sourceTree = "<group>"; };
 		5B7A364729DE1F3300FF1BAF /* LeagueDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeagueDetailsVC.swift; sourceTree = "<group>"; };
 		5B7A364A29DE519200FF1BAF /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
+		5B7A365029DE669100FF1BAF /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		5B7A365229DE792700FF1BAF /* Players.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Players.json; sourceTree = "<group>"; };
+		5B7A365429DE797900FF1BAF /* Leagues.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Leagues.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +159,8 @@
 			isa = PBXGroup;
 			children = (
 				5B7A363929D72EA500FF1BAF /* Games.json */,
+				5B7A365229DE792700FF1BAF /* Players.json */,
+				5B7A365429DE797900FF1BAF /* Leagues.json */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -161,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				5B7A364A29DE519200FF1BAF /* PersistenceManager.swift */,
+				5B7A365029DE669100FF1BAF /* DataManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -225,6 +234,8 @@
 			files = (
 				5B7A361729D51F6700FF1BAF /* Assets.xcassets in Resources */,
 				5B7A363A29D72EA500FF1BAF /* Games.json in Resources */,
+				5B7A365529DE797900FF1BAF /* Leagues.json in Resources */,
+				5B7A365329DE792700FF1BAF /* Players.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B7A363129D649B900FF1BAF /* PlayerCell.swift in Sources */,
+				5B7A365129DE669100FF1BAF /* DataManager.swift in Sources */,
 				5B7A363E29DDCFDA00FF1BAF /* LeaguesVC.swift in Sources */,
 				5B7A364829DE1F3300FF1BAF /* LeagueDetailsVC.swift in Sources */,
 				5B7A363829D72E7E00FF1BAF /* Game.swift in Sources */,

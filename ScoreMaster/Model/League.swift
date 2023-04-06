@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct League {
+struct League: Codable {
+	let id: Int
 	let name: String
-	var players: [Player]
+	var players: [Player] = []
 }

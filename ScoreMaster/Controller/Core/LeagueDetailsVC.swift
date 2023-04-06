@@ -28,7 +28,6 @@ class LeagueDetailsVC: UIViewController {
 		super.viewDidLoad()
 		
 		configureViewController()
-		league.players = [Player(name: "Sasha", avatar: ""), Player(name: "Alyosha", avatar: "")]
 		configureTableView()
 		
 	}

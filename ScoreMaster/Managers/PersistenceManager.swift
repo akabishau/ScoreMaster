@@ -13,14 +13,15 @@ enum PersistenceManager {
 	
 	private enum Keys {
 		static let players = "players"
+		static let leagues = "leagues"
 	}
 	
 	
-	static func save(players: [Player]) -> Error? {
+	//MARK: - Players using DataManager
+	static func savePlayers() -> Error? {
 		do {
-			let encoder = JSONEncoder()
-			let encodedPlayers = try encoder.encode(players)
-			defaults.set(encodedPlayers, forKey: Keys.players)
+			let encodedData = try JSONEncoder().encode(DataManager.shared.players)
+			defaults.set(encodedData, forKey: Keys.players)
 			return nil
 		} catch {
 			return error
@@ -28,16 +29,44 @@ enum PersistenceManager {
 	}
 	
 	
-	static func retrievePlayers(completion: @escaping (Result<[Player], Error>) -> Void) {
+	static func retrievePlayers() -> [Player] {
 		guard let data = defaults.data(forKey: Keys.players) else {
-			completion(.success([]))
-			return
+			return []
 		}
+		
 		do {
 			let players = try JSONDecoder().decode([Player].self, from: data)
-			completion(.success(players))
+			return players
 		} catch {
-			completion(.failure(error))
+			print("ERROR decoding Players: \(error.localizedDescription)")
+			return []
+		}
+	}
+	
+	
+	//MARK: - League
+	static func saveLeagues() -> Error? {
+		do {
+			let encodedData = try JSONEncoder().encode(DataManager.shared.leagues)
+			defaults.set(encodedData, forKey: Keys.leagues)
+			return nil
+		} catch {
+			return error
+		}
+	}
+	
+	
+	static func retrieveLeagues() -> [League] {
+		guard let data = defaults.data(forKey: Keys.leagues) else {
+			return []
+		}
+		
+		do {
+			let players = try JSONDecoder().decode([League].self, from: data)
+			return players
+		} catch {
+			print("ERROR decoding Leagues: \(error.localizedDescription)")
+			return []
 		}
 	}
 }
