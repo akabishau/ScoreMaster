@@ -8,6 +8,8 @@
 import UIKit
 
 class MainTabBarController: UITabBarController {
+	
+	let coreDataManager = CoreDataManager(modelName: "ScoreMaster")
 
 	override func viewDidLoad() {
 		super.viewDidLoad()

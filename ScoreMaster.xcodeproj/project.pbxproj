@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B5F931D29DF5C6200E1E390 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5F931C29DF5C6200E1E390 /* CoreDataManager.swift */; };
+		5B5F932129DF647300E1E390 /* ScoreMaster.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5B5F931F29DF647300E1E390 /* ScoreMaster.xcdatamodeld */; };
 		5B7A360E29D51F6600FF1BAF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A360D29D51F6600FF1BAF /* AppDelegate.swift */; };
 		5B7A361029D51F6600FF1BAF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A360F29D51F6600FF1BAF /* SceneDelegate.swift */; };
 		5B7A361229D51F6600FF1BAF /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7A361129D51F6600FF1BAF /* MainTabBarController.swift */; };
@@ -33,6 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5B5F931C29DF5C6200E1E390 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		5B5F932029DF647300E1E390 /* ScoreMaster.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ScoreMaster.xcdatamodel; sourceTree = "<group>"; };
 		5B7A360A29D51F6600FF1BAF /* ScoreMaster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScoreMaster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7A360D29D51F6600FF1BAF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5B7A360F29D51F6600FF1BAF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -71,6 +75,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5B5F931E29DF645F00E1E390 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				5B5F931F29DF647300E1E390 /* ScoreMaster.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		5B7A360129D51F6500FF1BAF = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +102,7 @@
 		5B7A360C29D51F6600FF1BAF /* ScoreMaster */ = {
 			isa = PBXGroup;
 			children = (
+				5B5F931E29DF645F00E1E390 /* CoreData */,
 				5B7A364929DE518200FF1BAF /* Managers */,
 				5B7A362F29D6498400FF1BAF /* View */,
 				5B7A362229D51F8800FF1BAF /* Model */,
@@ -170,6 +183,7 @@
 			children = (
 				5B7A364A29DE519200FF1BAF /* PersistenceManager.swift */,
 				5B7A365029DE669100FF1BAF /* DataManager.swift */,
+				5B5F931C29DF5C6200E1E390 /* CoreDataManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -258,12 +272,14 @@
 				5B7A364029DDEC6500FF1BAF /* League.swift in Sources */,
 				5B7A364229DDF1C300FF1BAF /* AddPlayerVC.swift in Sources */,
 				5B7A360E29D51F6600FF1BAF /* AppDelegate.swift in Sources */,
+				5B5F932129DF647300E1E390 /* ScoreMaster.xcdatamodeld in Sources */,
 				5B7A361029D51F6600FF1BAF /* SceneDelegate.swift in Sources */,
 				5B7A362C29D5CB3D00FF1BAF /* GamesVC.swift in Sources */,
 				5B7A362E29D5CB4700FF1BAF /* StatsVC.swift in Sources */,
 				5B7A363329D64CC700FF1BAF /* Player.swift in Sources */,
 				5B7A364B29DE519200FF1BAF /* PersistenceManager.swift in Sources */,
 				5B7A362629D5CAD400FF1BAF /* OverviewVC.swift in Sources */,
+				5B5F931D29DF5C6200E1E390 /* CoreDataManager.swift in Sources */,
 				5B7A364429DDF66900FF1BAF /* SMButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -467,6 +483,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5B5F931F29DF647300E1E390 /* ScoreMaster.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5B5F932029DF647300E1E390 /* ScoreMaster.xcdatamodel */,
+			);
+			currentVersion = 5B5F932029DF647300E1E390 /* ScoreMaster.xcdatamodel */;
+			path = ScoreMaster.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 5B7A360229D51F6500FF1BAF /* Project object */;
 }
