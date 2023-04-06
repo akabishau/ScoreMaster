@@ -43,7 +43,7 @@ class AddPlayerVC: UIViewController {
 	
 	
 	@objc private func addPlayerAndDismiss() {
-		delegate?.didAddPlayer(Player(name: nameTextField.text!, avatar: "", email: ""))
+		delegate?.didAddPlayer(Player(name: nameTextField.text!, avatar: ""))
 		dismiss(animated: true)
 	}
 	

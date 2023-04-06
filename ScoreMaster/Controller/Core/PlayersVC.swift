@@ -23,19 +23,16 @@ class PlayersVC: UIViewController {
 	
 	
 	private func getPlayers() {
-		if let path = Bundle.main.path(forResource: "Players", ofType: "json") {
-			do {
-				let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-				players = try JSONDecoder().decode([Player].self, from: data)
-				tableView.reloadData()
-				
-			} catch {
-				print("Error decoding local JSON file: \(error)")
+		PersistenceManager.retrievePlayers { [weak self] result in
+			guard let self = self else { return }
+			switch result {
+				case .success(let players):
+					self.players = players
+					self.tableView.reloadData()
+				case .failure(let error):
+					print("Error retrieving players: \(error.localizedDescription)")
 			}
-		} else {
-			print("Local JSON file not found.")
 		}
-
 	}
 	
 	
@@ -88,9 +85,15 @@ extension PlayersVC: UITableViewDelegate {
 
 
 extension PlayersVC: AddPlayerVCDelegate {
+	
 	func didAddPlayer(_ player: Player) {
-		print(#function)
 		players.append(player)
-		tableView.reloadData()
+		if let error = PersistenceManager.save(players: players) {
+			players.removeLast() // undo previously appended local array of players
+			print("Alert: Couldn't save the player. Error: \(error)")
+		} else {
+			print("New User Saved")
+			tableView.reloadData()
+		}
 	}
 }
