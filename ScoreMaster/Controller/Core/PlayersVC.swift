@@ -11,9 +11,17 @@ import CoreData
 class PlayersVC: UIViewController {
 		
 	private let tableView = UITableView()
+	
 	var managedObjectContext: NSManagedObjectContext!
 	
-	var players: [Player] = []
+	private lazy var fetchedResultsController: NSFetchedResultsController<Player> = {
+		let fetchRequest: NSFetchRequest<Player> = Player.fetchRequest()
+		fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Player.name), ascending: true)]
+		
+		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+		fetchedResultsController.delegate = self
+		return fetchedResultsController
+	}()
 	
 	
 	override func viewDidLoad() {
@@ -21,83 +29,21 @@ class PlayersVC: UIViewController {
 		
 		configureViewController()
 		configureTableView()
-//		loadSamplePlayers()
-		setupNotificationHandling()
-		fetchNotes()
+		fetchPlayers()
 	}
 	
 	
-	private func fetchNotes() {
-		print(#function)
-		// Create Fetch Request
-		let fetchRequest: NSFetchRequest<Player> = Player.fetchRequest()
-		// Configure Fetch Request
-		fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Player.name), ascending: false)]
-		
-		managedObjectContext.performAndWait {
-			do {
-				let players = try fetchRequest.execute()
-				self.players = players
-				self.tableView.reloadData()
-			} catch {
-				let fetchError = error as NSError
-				print("Unable to Execute Fetch Request")
-				print("\(fetchError), \(fetchError.localizedDescription)")
-			}
+	private func fetchPlayers() {
+		do {
+			try fetchedResultsController.performFetch()
+		} catch {
+			print("Unable to Perform Fetch Request")
+			print("\(error), \(error.localizedDescription)")
 		}
+		//TODO: - Add Empty State Logic
 	}
 	
-	
-	private func setupNotificationHandling() {
-		let notificationCenter = NotificationCenter.default
-		notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange(_:)), name: NSManagedObjectContext.didChangeObjectsNotification, object: managedObjectContext)
-		
-	}
-	
-	@objc private func managedObjectContextObjectsDidChange(_ notification: Notification) {
-		print(#function)
-		
-		guard let userInfo = notification.userInfo else { return }
-		
-		var playersDidChange = false
-		
-		if let inserts = userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject> {
-			for insert in inserts {
-				if let player = insert as? Player {
-					players.append(player)
-					playersDidChange = true
-				}
-			}
-		}
-		
-		if let updates = userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject> {
-			for update in updates {
-				if let _ = update as? Player {
-					playersDidChange = true
-				}
-			}
-		}
-		
-		if let deletes = userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject> {
-			for delete in deletes {
-				if let player = delete as? Player {
-					if let index = players.firstIndex(of: player) {
-						players.remove(at: index)
-						playersDidChange = true
-					}
-				}
-			}
-		}
-		
-		if playersDidChange {
-			players.sort { player1, player2 in
-				return player1.name! < player2.name!
-			}
-			tableView.reloadData()
-		}
-	}
-	
-	
+
 	private func configureTableView() {
 		view.addSubview(tableView)
 		tableView.frame = view.bounds
@@ -126,17 +72,26 @@ class PlayersVC: UIViewController {
 	}
 }
 
-
+//MARK: - Table View Data Source
 extension PlayersVC: UITableViewDataSource {
 	
+	func numberOfSections(in tableView: UITableView) -> Int {
+		return fetchedResultsController.sections?.count ?? 0
+	}
+	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return players.count
+		print(#function)
+		guard let section = fetchedResultsController.sections?[section] else {
+			return 0
+		}
+		return section.numberOfObjects
 	}
 	
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let player = fetchedResultsController.object(at: indexPath)
 		let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.reuseId, for: indexPath) as! PlayerCell
-		cell.set(with: players[indexPath.row])
+		cell.set(with: player)
 		return cell
 	}
 	
@@ -144,13 +99,59 @@ extension PlayersVC: UITableViewDataSource {
 	//TODO: - Player can be remove only if they didn't play and games
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		guard editingStyle == .delete else { return }
-		managedObjectContext.delete(players[indexPath.row])
+		let player = fetchedResultsController.object(at: indexPath)
+		managedObjectContext.delete(player)
 		
 	}
 }
 
+
+//MARK: - Table View Delegate
 extension PlayersVC: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
+	}
+}
+
+
+//MARK: - Fetch Results Controller Delegate
+extension PlayersVC: NSFetchedResultsControllerDelegate {
+	
+	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		tableView.beginUpdates()
+	}
+	
+	
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		tableView.endUpdates()
+	}
+	
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+		
+		switch type {
+			case .insert:
+				if let indexPath = newIndexPath {
+					tableView.insertRows(at: [indexPath], with: .fade)
+				}
+			case .delete:
+				if let indexPath = indexPath {
+					tableView.deleteRows(at: [indexPath], with: .fade)
+				}
+			case .move:
+				if let indexPath = indexPath {
+					tableView.deleteRows(at: [indexPath], with: .fade)
+				}
+				if let indexPath = newIndexPath {
+					tableView.insertRows(at: [indexPath], with: .fade)
+				}
+			case .update:
+				if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? PlayerCell {
+					let player = fetchedResultsController.object(at: indexPath)
+					cell.set(with: player)
+				}
+				
+			@unknown default:
+				fatalError("Uknown type of NSFetchedResultsChangeType")
+		}
 	}
 }
