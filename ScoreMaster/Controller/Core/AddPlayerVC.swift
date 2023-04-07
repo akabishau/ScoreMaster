@@ -6,10 +6,7 @@
 //
 
 import UIKit
-
-protocol AddPlayerVCDelegate: AnyObject {
-	func didAddPlayer(_ player: Player)
-}
+import CoreData
 
 
 class AddPlayerVC: UIViewController {
@@ -17,9 +14,7 @@ class AddPlayerVC: UIViewController {
 	let nameTextField = SMTextField()
 	let actionButton = SMButton(backgroundColor: .systemPink, title: "Add Player")
 	
-	
-	weak var delegate: AddPlayerVCDelegate?
-	
+	var managedObjectContext: NSManagedObjectContext!
 	
 	
 	override func viewDidLoad() {
@@ -38,12 +33,16 @@ class AddPlayerVC: UIViewController {
 		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissVC))
 		navigationItem.rightBarButtonItem = cancelButton
 		
-		actionButton.addTarget(self, action: #selector(addPlayerAndDismiss), for: .touchUpInside)
+		//actionButton.addTarget(self, action: #selector(addPlayerAndDismiss), for: .touchUpInside)
+		actionButton.addTarget(self, action: #selector(savePlayer), for: .touchUpInside)
 	}
 	
-	
-	@objc private func addPlayerAndDismiss() {
-		delegate?.didAddPlayer(Player(name: nameTextField.text!, avatar: ""))
+	@objc private func savePlayer() {
+		print(#function)
+		
+		let player = Player(context: managedObjectContext)
+		player.name = nameTextField.text!
+		
 		dismiss(animated: true)
 	}
 	

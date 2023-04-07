@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import UIKit
 
 final class CoreDataManager {
 	
@@ -13,17 +14,18 @@ final class CoreDataManager {
 	
 	init(modelName: String) {
 		self.modelName = modelName
+		setupNotificationHandling()
 	}
 	
 	
-	// context
+	//MARK: - Core Data Stack
 	private(set) lazy var managedObjectContext: NSManagedObjectContext = {
 		let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator // parent contexts keeps a reference to teh coordinator
 		return managedObjectContext
 	}()
 	
-	// model
+	
 	private lazy var managedObjectModel: NSManagedObjectModel = {
 		guard let modelURL = Bundle.main.url(forResource: self.modelName, withExtension: "momd") else {
 			fatalError("Unable to Find Data Model")
@@ -35,7 +37,7 @@ final class CoreDataManager {
 		return managedObjectModel
 	}()
 	
-	// coordinator
+	
 	private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
 		let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
 		
@@ -46,17 +48,38 @@ final class CoreDataManager {
 		
 		// try to add store to the container
 		do {
-			try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
-															  configurationName: nil,
-															  at: storeURL,
-															  options: nil)
+			try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: nil)
 		} catch {
 			fatalError("Unable to Add Persistent Store")
 		}
-		
-		
 		return persistentStoreCoordinator
 	}()
 	
 	
+	//MARK: - Saving Data
+	
+	private func setupNotificationHandling() {
+		let notificationCenter = NotificationCenter.default
+		notificationCenter.addObserver(self, selector: #selector(saveChanges(_:)), name: UIApplication.willTerminateNotification, object: nil)
+		notificationCenter.addObserver(self, selector: #selector(saveChanges(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
+		
+	}
+	
+	
+	@objc private func saveChanges(_ notification: Notification) {
+		saveChanges()
+	}
+	
+	
+	private func saveChanges() {
+		print(#function)
+		
+		guard managedObjectContext.hasChanges else { return }
+		do {
+			try managedObjectContext.save()
+		} catch {
+			print("Unable to Save Managed Object Context")
+			print("\(error), \(error.localizedDescription)")
+		}
+	}
 }

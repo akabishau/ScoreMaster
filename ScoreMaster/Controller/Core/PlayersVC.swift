@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import CoreData
 
 class PlayersVC: UIViewController {
 		
 	private let tableView = UITableView()
-	private let dataManager = DataManager.shared
+	var managedObjectContext: NSManagedObjectContext!
+	
+	var players: [Player] = []
 	
 	
 	override func viewDidLoad() {
@@ -18,32 +21,81 @@ class PlayersVC: UIViewController {
 		
 		configureViewController()
 		configureTableView()
-		loadSamplePlayers()
+//		loadSamplePlayers()
+		setupNotificationHandling()
+		fetchNotes()
 	}
 	
 	
-	private func loadSamplePlayers() {
-		if dataManager.players.isEmpty {
-			if let path = Bundle.main.path(forResource: "Players", ofType: "json") {
-				do {
-					let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-					dataManager.players = try JSONDecoder().decode([Player].self, from: data)
-					if let error = PersistenceManager.savePlayers() {
-						dataManager.players = []
-						print("Alert: Couldn't save Players Sample. Error: \(error)")
-					} else {
-						print("Players added from local json")
-						tableView.reloadData()
-					}
-				} catch {
-					print("Error decoding local JSON file: \(error)")
-				}
-			} else {
-				print("Local JSON file not found.")
+	private func fetchNotes() {
+		print(#function)
+		// Create Fetch Request
+		let fetchRequest: NSFetchRequest<Player> = Player.fetchRequest()
+		// Configure Fetch Request
+		fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Player.name), ascending: false)]
+		
+		managedObjectContext.performAndWait {
+			do {
+				let players = try fetchRequest.execute()
+				self.players = players
+				self.tableView.reloadData()
+			} catch {
+				let fetchError = error as NSError
+				print("Unable to Execute Fetch Request")
+				print("\(fetchError), \(fetchError.localizedDescription)")
 			}
 		}
 	}
 	
+	
+	private func setupNotificationHandling() {
+		let notificationCenter = NotificationCenter.default
+		notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange(_:)), name: NSManagedObjectContext.didChangeObjectsNotification, object: managedObjectContext)
+		
+	}
+	
+	@objc private func managedObjectContextObjectsDidChange(_ notification: Notification) {
+		print(#function)
+		
+		guard let userInfo = notification.userInfo else { return }
+		
+		var playersDidChange = false
+		
+		if let inserts = userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject> {
+			for insert in inserts {
+				if let player = insert as? Player {
+					players.append(player)
+					playersDidChange = true
+				}
+			}
+		}
+		
+		if let updates = userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject> {
+			for update in updates {
+				if let _ = update as? Player {
+					playersDidChange = true
+				}
+			}
+		}
+		
+		if let deletes = userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject> {
+			for delete in deletes {
+				if let player = delete as? Player {
+					if let index = players.firstIndex(of: player) {
+						players.remove(at: index)
+						playersDidChange = true
+					}
+				}
+			}
+		}
+		
+		if playersDidChange {
+			players.sort { player1, player2 in
+				return player1.name! < player2.name!
+			}
+			tableView.reloadData()
+		}
+	}
 	
 	
 	private func configureTableView() {
@@ -66,7 +118,9 @@ class PlayersVC: UIViewController {
 	
 	@objc private func addButtonTapped() {
 		let addPlayerVC = AddPlayerVC()
-		addPlayerVC.delegate = self
+		addPlayerVC.managedObjectContext = managedObjectContext
+		
+		//TODO: is this a valid scenario? Change to push/pop
 		let navigationController = UINavigationController(rootViewController: addPlayerVC)
 		present(navigationController, animated: true)
 	}
@@ -76,34 +130,27 @@ class PlayersVC: UIViewController {
 extension PlayersVC: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return dataManager.players.count
+		return players.count
 	}
 	
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.reuseId, for: indexPath) as! PlayerCell
-		cell.set(with: dataManager.players[indexPath.row])
+		cell.set(with: players[indexPath.row])
 		return cell
+	}
+	
+	
+	//TODO: - Player can be remove only if they didn't play and games
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+		guard editingStyle == .delete else { return }
+		managedObjectContext.delete(players[indexPath.row])
+		
 	}
 }
 
 extension PlayersVC: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
-	}
-}
-
-
-extension PlayersVC: AddPlayerVCDelegate {
-	
-	func didAddPlayer(_ player: Player) {
-		dataManager.players.append(player)
-		if let error = PersistenceManager.savePlayers() {
-			dataManager.players.removeLast()
-			print("Alert: Couldn't save the player. Error: \(error)")
-		} else {
-			print("New User Saved")
-			tableView.reloadData()
-		}
 	}
 }

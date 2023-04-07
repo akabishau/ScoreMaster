@@ -10,6 +10,8 @@ import UIKit
 class MainTabBarController: UITabBarController {
 	
 	let coreDataManager = CoreDataManager(modelName: "ScoreMaster")
+	
+//	let player = Player(conte
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -30,6 +32,7 @@ class MainTabBarController: UITabBarController {
 
 	private func createPlayersNC() -> UINavigationController {
 		let playersVC = PlayersVC()
+		playersVC.managedObjectContext = coreDataManager.managedObjectContext
 		playersVC.title = "Players"
 		playersVC.view.backgroundColor = .systemBackground
 		playersVC.tabBarItem = UITabBarItem(title: "Players", image: UIImage(systemName: "person.2"), tag: 1)

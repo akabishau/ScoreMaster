@@ -62,13 +62,13 @@ class LeagueDetailsVC: UIViewController {
 extension LeagueDetailsVC: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return league.players.count
+		return 2
 	}
 	
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.reuseId, for: indexPath) as! PlayerCell
-		cell.set(with: league.players[indexPath.row])
+		//cell.set(with: league.players[indexPath.row])
 		return cell
 	}
 }
