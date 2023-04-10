@@ -60,6 +60,7 @@ class MainTabBarController: UITabBarController {
 	
 	private func createLeagueNC() -> UINavigationController {
 		let leaguesVC = LeaguesVC()
+		leaguesVC.managedObjectContext = coreDataManager.managedObjectContext
 		leaguesVC.title = "Leagues"
 		leaguesVC.view.backgroundColor = .systemBackground
 		leaguesVC.tabBarItem = UITabBarItem(title: "Leagues", image: UIImage(systemName: "person.3"), tag: 4)

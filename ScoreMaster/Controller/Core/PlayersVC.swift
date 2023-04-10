@@ -80,7 +80,7 @@ extension PlayersVC: UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		print(#function)
+		
 		guard let section = fetchedResultsController.sections?[section] else {
 			return 0
 		}
