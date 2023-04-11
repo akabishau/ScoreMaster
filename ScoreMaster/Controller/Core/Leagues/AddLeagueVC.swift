@@ -12,18 +12,24 @@ class AddLeagueVC: UIViewController {
 	
 	var managedObjectContext: NSManagedObjectContext!
 	
+	let nameTextField = SMTextField()
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		configureViewController()
+		layoutUI()
 	}
 	
 	private func configureViewController() {
 		view.backgroundColor = .systemBackground
-		title = "New League"
+		title = "Add New League"
+		
+		let saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveLeague))
+		navigationItem.rightBarButtonItem = saveButton
 		
 		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissVC))
-		navigationItem.rightBarButtonItem = cancelButton
+		navigationItem.leftBarButtonItem = cancelButton
 	}
 	
 	
@@ -31,15 +37,31 @@ class AddLeagueVC: UIViewController {
 		print(#function)
 		
 		let league = League(context: managedObjectContext)
-		league.name = "46 Seconds"
+		league.name = nameTextField.text
 		league.id = 1
 		league.players = []
-//		dismiss(animated: true)
+		dismiss(animated: true)
 	}
 	
 	
 	@objc private func dismissVC() {
-		saveLeague()
 		dismiss(animated: true)
+	}
+	
+	
+	private func layoutUI() {
+		
+		view.addSubview(nameTextField)
+		nameTextField.placeholder = "Enter Your League Name"
+		
+		let padding: CGFloat = 20
+		
+		NSLayoutConstraint.activate([
+			nameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
+			nameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+			nameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+			nameTextField.heightAnchor.constraint(equalToConstant: 40)
+		
+		])
 	}
 }

@@ -35,7 +35,7 @@ class SMTextField: UITextField {
 		autocorrectionType = .no
 		keyboardType = .default
 		returnKeyType = .go
-		placeholder = "Enter a username"
+//		placeholder = "Enter a username"
 		//		clearButtonMode = .whileEditing
 	}
 }
