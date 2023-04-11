@@ -19,6 +19,14 @@ class LeaguesVC: UIViewController {
 		
 		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
 		fetchedResultsController.delegate = self
+		
+		do {
+			try fetchedResultsController.performFetch()
+		} catch {
+			print("Unable to Perform Fetch Request")
+			print("\(error), \(error.localizedDescription)")
+		}
+		
 		return fetchedResultsController
 	}()
 	
@@ -32,7 +40,7 @@ class LeaguesVC: UIViewController {
 		
 		configureViewController()
 		configureTableView()
-		fetchLeagues()
+//		fetchLeagues()
 	}
 	
 	
@@ -102,8 +110,8 @@ extension LeaguesVC: UITableViewDataSource {
 extension LeaguesVC: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
-		
-		let detailsVC = LeagueDetailsVC(league: leagues[indexPath.row])
+		let league = fetchedResultsController.object(at: indexPath)
+		let detailsVC = LeagueDetailsVC(league: league)
 		navigationController?.pushViewController(detailsVC, animated: true)
 	}
 }
@@ -112,19 +120,19 @@ extension LeaguesVC: UITableViewDelegate {
 //MARK: - Fetch Results Controller Delegate
 extension LeaguesVC: NSFetchedResultsControllerDelegate {
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		print(#function)
+//		print(#function)
 		tableView.beginUpdates()
 	}
 	
 	
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		print(#function)
+//		print(#function)
 		tableView.endUpdates()
 	}
 	
 	
 	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-		print(#function)
+//		print(#function)
 		switch type {
 			case .insert:
 				if let indexPath = newIndexPath {
@@ -142,6 +150,8 @@ extension LeaguesVC: NSFetchedResultsControllerDelegate {
 					tableView.insertRows(at: [indexPath], with: .fade)
 				}
 			case .update:
+				print("update leagues")
+				#warning("work on main/child content")
 				if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) {
 					let league = fetchedResultsController.object(at: indexPath)
 					cell.textLabel?.text = league.name
