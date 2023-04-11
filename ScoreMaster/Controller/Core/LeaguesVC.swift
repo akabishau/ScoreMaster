@@ -101,6 +101,7 @@ extension LeaguesVC: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let league = fetchedResultsController.object(at: indexPath)
+		print("\(league.name ?? "") has \(league.players?.count ?? 0) players")
 		let cell = tableView.dequeueReusableCell(withIdentifier: "basicStyle", for: indexPath)
 		cell.textLabel?.text = league.name
 		return cell

@@ -90,6 +90,7 @@ extension PlayersVC: UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let player = fetchedResultsController.object(at: indexPath)
+		print("\(player.name ?? "") plays in \(player.leagues?.count ?? 0) leagues")
 		let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.reuseId, for: indexPath) as! PlayerCell
 		cell.set(with: player)
 		return cell
