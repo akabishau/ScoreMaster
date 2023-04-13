@@ -14,7 +14,7 @@ class AddPlayerVC: UIViewController {
 	let nameTextField = SMTextField()
 	let actionButton = SMButton(backgroundColor: .systemPink, title: "Add Player")
 	
-	var managedObjectContext: NSManagedObjectContext!
+	var storageProvider: StorageProvider!
 	
 	
 	override func viewDidLoad() {
@@ -33,14 +33,13 @@ class AddPlayerVC: UIViewController {
 		let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissVC))
 		navigationItem.rightBarButtonItem = cancelButton
 		
-		//actionButton.addTarget(self, action: #selector(addPlayerAndDismiss), for: .touchUpInside)
 		actionButton.addTarget(self, action: #selector(savePlayer), for: .touchUpInside)
 	}
 	
 	@objc private func savePlayer() {
-		print(#function)
+//		print(#function)
 		
-		let player = Player(context: managedObjectContext)
+		let player = Player(context: storageProvider.context)
 		player.name = nameTextField.text!
 		
 		dismiss(animated: true)

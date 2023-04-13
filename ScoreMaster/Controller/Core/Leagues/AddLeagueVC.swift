@@ -10,7 +10,7 @@ import CoreData
 
 class AddLeagueVC: UIViewController {
 	
-	var managedObjectContext: NSManagedObjectContext!
+	var storageProvider: StorageProvider!
 	
 	let nameTextField = SMTextField()
 	
@@ -34,9 +34,7 @@ class AddLeagueVC: UIViewController {
 	
 	
 	@objc private func saveLeague() {
-		print(#function)
-		
-		let league = League(context: managedObjectContext)
+		let league = League(context: storageProvider.context)
 		league.name = nameTextField.text
 		league.id = 1
 		league.players = []

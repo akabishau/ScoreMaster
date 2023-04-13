@@ -12,13 +12,13 @@ class PlayersVC: UIViewController {
 		
 	private let tableView = UITableView()
 	
-	var managedObjectContext: NSManagedObjectContext!
+	var storageProvider: StorageProvider!
 	
 	private lazy var fetchedResultsController: NSFetchedResultsController<Player> = {
 		let fetchRequest: NSFetchRequest<Player> = Player.fetchRequest()
 		fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Player.name), ascending: true)]
 		
-		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: storageProvider.context, sectionNameKeyPath: nil, cacheName: nil)
 		fetchedResultsController.delegate = self
 		return fetchedResultsController
 	}()
@@ -64,7 +64,7 @@ class PlayersVC: UIViewController {
 	
 	@objc private func addButtonTapped() {
 		let addPlayerVC = AddPlayerVC()
-		addPlayerVC.managedObjectContext = managedObjectContext
+		addPlayerVC.storageProvider = storageProvider
 		
 		//TODO: is this a valid scenario? Change to push/pop
 		let navigationController = UINavigationController(rootViewController: addPlayerVC)
@@ -101,8 +101,7 @@ extension PlayersVC: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		guard editingStyle == .delete else { return }
 		let player = fetchedResultsController.object(at: indexPath)
-		managedObjectContext.delete(player)
-		
+		storageProvider.context.delete(player)
 	}
 }
 

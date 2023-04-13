@@ -9,9 +9,7 @@ import UIKit
 
 class MainTabBarController: UITabBarController {
 	
-	let coreDataManager = CoreDataManager(modelName: "ScoreMaster")
-	
-//	let player = Player(conte
+	let storageProvider = StorageProvider(modelName: "ScoreMaster")
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -32,7 +30,7 @@ class MainTabBarController: UITabBarController {
 
 	private func createPlayersNC() -> UINavigationController {
 		let playersVC = PlayersVC()
-		playersVC.managedObjectContext = coreDataManager.managedObjectContext
+		playersVC.storageProvider = storageProvider
 		playersVC.title = "Players"
 		playersVC.view.backgroundColor = .systemBackground
 		playersVC.tabBarItem = UITabBarItem(title: "Players", image: UIImage(systemName: "person.2"), tag: 1)
@@ -60,7 +58,7 @@ class MainTabBarController: UITabBarController {
 	
 	private func createLeagueNC() -> UINavigationController {
 		let leaguesVC = LeaguesVC()
-		leaguesVC.managedObjectContext = coreDataManager.managedObjectContext
+		leaguesVC.storageProvider = storageProvider
 		leaguesVC.title = "Leagues"
 		leaguesVC.view.backgroundColor = .systemBackground
 		leaguesVC.tabBarItem = UITabBarItem(title: "Leagues", image: UIImage(systemName: "person.3"), tag: 4)

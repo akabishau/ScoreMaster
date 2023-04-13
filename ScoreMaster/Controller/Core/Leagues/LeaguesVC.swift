@@ -10,14 +10,15 @@ import CoreData
 
 class LeaguesVC: UIViewController {
 	
-	var managedObjectContext: NSManagedObjectContext!
+//	var managedObjectContext: NSManagedObjectContext!
+	var storageProvider: StorageProvider!
 	
 	private lazy var fetchedResultsController: NSFetchedResultsController<League> = {
 		
 		let fetchRequest: NSFetchRequest<League> = League.fetchRequest()
 		fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(League.name), ascending: true)]
 		
-		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: storageProvider.context, sectionNameKeyPath: nil, cacheName: nil)
 		fetchedResultsController.delegate = self
 		
 		do {
@@ -33,31 +34,19 @@ class LeaguesVC: UIViewController {
 	
 	
 	private let tableView = UITableView()
-	private var leagues: [League] = []
+//	private var leagues: [League] = []
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		configureViewController()
 		configureTableView()
-//		fetchLeagues()
-	}
-	
-	
-	private func fetchLeagues() {
-		do {
-			try fetchedResultsController.performFetch()
-		} catch {
-			print("Unable to Perform Fetch Request")
-			print("\(error), \(error.localizedDescription)")
-		}
-		//TODO: - Add Empty State Logic
 	}
 	
 	
 	@objc private func addButtonTapped() {
 		let addLeagueVC = AddLeagueVC()
-		addLeagueVC.managedObjectContext = managedObjectContext
+		addLeagueVC.storageProvider = storageProvider
 		//TODO: is this a valid scenario? Change to push/pop
 		let navigationController = UINavigationController(rootViewController: addLeagueVC)
 		present(navigationController, animated: true)

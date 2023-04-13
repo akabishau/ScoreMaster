@@ -5,6 +5,7 @@
 //  Created by Aleksey Kabishau on 4/6/23.
 //
 
+/*
 import CoreData
 import UIKit
 
@@ -83,3 +84,4 @@ final class CoreDataManager {
 		}
 	}
 }
+*/

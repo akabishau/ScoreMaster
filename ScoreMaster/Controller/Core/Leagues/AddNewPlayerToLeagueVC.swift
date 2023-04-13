@@ -75,7 +75,8 @@ class AddNewPlayerToLeagueVC: UIViewController {
 			return
 		}
 		for index in selectedIndexes {
-			league.mutableSetValue(forKey: "players").add(fetchedResultsController.object(at: index))
+			let player = fetchedResultsController.object(at: index)
+			league.mutableSetValue(forKey: "players").add(player)
 		}
 		dismiss(animated: true)
 	}

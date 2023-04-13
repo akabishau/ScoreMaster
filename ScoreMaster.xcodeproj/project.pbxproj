@@ -30,6 +30,7 @@
 		5B7A365529DE797900FF1BAF /* Leagues.json in Resources */ = {isa = PBXBuildFile; fileRef = 5B7A365429DE797900FF1BAF /* Leagues.json */; };
 		5B81A7B729E4630F000BBAE4 /* AddLeagueVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B81A7B629E4630F000BBAE4 /* AddLeagueVC.swift */; };
 		5B81A7B929E4A542000BBAE4 /* AddNewPlayerToLeagueVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B81A7B829E4A542000BBAE4 /* AddNewPlayerToLeagueVC.swift */; };
+		5B81A7E629E71B81000BBAE4 /* StorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B81A7E529E71B81000BBAE4 /* StorageProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		5B7A365429DE797900FF1BAF /* Leagues.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Leagues.json; sourceTree = "<group>"; };
 		5B81A7B629E4630F000BBAE4 /* AddLeagueVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLeagueVC.swift; sourceTree = "<group>"; };
 		5B81A7B829E4A542000BBAE4 /* AddNewPlayerToLeagueVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewPlayerToLeagueVC.swift; sourceTree = "<group>"; };
+		5B81A7E529E71B81000BBAE4 /* StorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				5B5F931C29DF5C6200E1E390 /* CoreDataManager.swift */,
+				5B81A7E529E71B81000BBAE4 /* StorageProvider.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				5B7A363E29DDCFDA00FF1BAF /* LeaguesVC.swift in Sources */,
 				5B7A364829DE1F3300FF1BAF /* LeagueDetailsVC.swift in Sources */,
 				5B7A363829D72E7E00FF1BAF /* Game.swift in Sources */,
+				5B81A7E629E71B81000BBAE4 /* StorageProvider.swift in Sources */,
 				5B7A361229D51F6600FF1BAF /* MainTabBarController.swift in Sources */,
 				5B7A363C29D7304900FF1BAF /* GameCell.swift in Sources */,
 				5B7A364629DDF76D00FF1BAF /* SMTextField.swift in Sources */,

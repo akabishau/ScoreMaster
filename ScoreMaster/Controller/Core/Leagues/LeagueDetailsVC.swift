@@ -69,7 +69,6 @@ class LeagueDetailsVC: UIViewController {
 	@objc private func addButtonTapped() {
 		let vc = AddNewPlayerToLeagueVC()
 		vc.league = league
-		print(league)
 		let nc = UINavigationController(rootViewController: vc)
 		present(nc, animated: true)
 		
@@ -135,6 +134,7 @@ extension LeagueDetailsVC: NSFetchedResultsControllerDelegate {
 
 		switch type {
 			case .insert:
+				print("insert")
 				if let indexPath = newIndexPath {
 					tableView.insertRows(at: [indexPath], with: .fade)
 				}
@@ -156,7 +156,7 @@ extension LeagueDetailsVC: NSFetchedResultsControllerDelegate {
 					cell.set(with: player)
 				}
 
-			@unknown default:
+			default:
 				fatalError("Uknown type of NSFetchedResultsChangeType")
 		}
 	}
