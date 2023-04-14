@@ -10,37 +10,49 @@ import CoreData
 
 class LeaguesVC: UIViewController {
 	
-//	var managedObjectContext: NSManagedObjectContext!
+	private var tableView =  UITableView()
+	
 	var storageProvider: StorageProvider!
 	
 	private lazy var fetchedResultsController: NSFetchedResultsController<League> = {
 		
 		let fetchRequest: NSFetchRequest<League> = League.fetchRequest()
-		fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(League.name), ascending: true)]
+		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
 		
 		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: storageProvider.context, sectionNameKeyPath: nil, cacheName: nil)
 		fetchedResultsController.delegate = self
-		
+		return fetchedResultsController
+	}()
+	
+	
+	private lazy var dataSource: UITableViewDiffableDataSource<String, NSManagedObjectID> = {
+		print("leagues data source creation")
+		let dataSource = UITableViewDiffableDataSource<String, NSManagedObjectID>(tableView: tableView) { tableView, indexPath, itemIdentifier in
+			
+			guard let league = try? self.storageProvider.context.existingObject(with: itemIdentifier) as? League else { return nil }
+			let cell = UITableViewCell(style: .default, reuseIdentifier: "basicStyle")
+			cell.textLabel?.text = league.name
+			return cell
+		}
+		return dataSource
+	}()
+	
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		configureViewController()
+		configureTableView()
+		fetchLeagues()
+	}
+	
+	
+	private func fetchLeagues() {
 		do {
 			try fetchedResultsController.performFetch()
 		} catch {
 			print("Unable to Perform Fetch Request")
 			print("\(error), \(error.localizedDescription)")
 		}
-		
-		return fetchedResultsController
-	}()
-	
-	
-	
-	private let tableView = UITableView()
-//	private var leagues: [League] = []
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		
-		configureViewController()
-		configureTableView()
 	}
 	
 	
@@ -55,14 +67,13 @@ class LeaguesVC: UIViewController {
 	
 	
 	private func configureTableView() {
-		view.addSubview(tableView)
 		tableView.frame = view.bounds
+		tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 		tableView.rowHeight = 80
+		view.addSubview(tableView)
 		
-		tableView.dataSource = self
+		tableView.dataSource = dataSource
 		tableView.delegate = self
-		
-		tableView.register(UITableViewCell.self, forCellReuseIdentifier: "basicStyle")
 	}
 	
 	
@@ -73,35 +84,11 @@ class LeaguesVC: UIViewController {
 }
 
 
-//MARK: - Table View Data Source
-extension LeaguesVC: UITableViewDataSource {
-	
-	func numberOfSections(in tableView: UITableView) -> Int {
-		return fetchedResultsController.sections?.count ?? 0
-	}
-	
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		guard let section = fetchedResultsController.sections?[section] else {
-			return 0
-		}
-		return section.numberOfObjects
-	}
-	
-	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let league = fetchedResultsController.object(at: indexPath)
-		print("\(league.name ?? "") has \(league.players?.count ?? 0) players")
-		let cell = tableView.dequeueReusableCell(withIdentifier: "basicStyle", for: indexPath)
-		cell.textLabel?.text = league.name
-		return cell
-	}
-}
-
 extension LeaguesVC: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		let league = fetchedResultsController.object(at: indexPath)
-		let detailsVC = LeagueDetailsVC(league: league)
+		let detailsVC = LeagueDetailsVC(league: league, storageProvider: storageProvider)
 		navigationController?.pushViewController(detailsVC, animated: true)
 	}
 }
@@ -109,46 +96,10 @@ extension LeaguesVC: UITableViewDelegate {
 
 //MARK: - Fetch Results Controller Delegate
 extension LeaguesVC: NSFetchedResultsControllerDelegate {
-	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//		print(#function)
-		tableView.beginUpdates()
-	}
-	
-	
-	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//		print(#function)
-		tableView.endUpdates()
-	}
-	
-	
-	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-//		print(#function)
-		switch type {
-			case .insert:
-				if let indexPath = newIndexPath {
-					tableView.insertRows(at: [indexPath], with: .fade)
-				}
-			case .delete:
-				if let indexPath = indexPath {
-					tableView.deleteRows(at: [indexPath], with: .fade)
-				}
-			case .move:
-				if let indexPath = indexPath {
-					tableView.deleteRows(at: [indexPath], with: .fade)
-				}
-				if let indexPath = newIndexPath {
-					tableView.insertRows(at: [indexPath], with: .fade)
-				}
-			case .update:
-				print("update leagues")
-				#warning("work on main/child content")
-				if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) {
-					let league = fetchedResultsController.object(at: indexPath)
-					cell.textLabel?.text = league.name
-				}
-				
-			@unknown default:
-				fatalError("Uknown type of NSFetchedResultsChangeType")
-		}
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+		
+		print(#function, #file)
+		let leaguesSnapshot = snapshot as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>
+		dataSource.apply(leaguesSnapshot)
 	}
 }

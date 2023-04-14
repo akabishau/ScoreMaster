@@ -26,7 +26,6 @@ class AddNewPlayerToLeagueVC: UIViewController {
 		fetchRequest.predicate = NSPredicate(format: "NOT (SELF IN %@)", league.players ?? [])
 		
 		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-		fetchedResultsController.delegate = self
 		
 		do {
 			try fetchedResultsController.performFetch()
@@ -116,6 +115,3 @@ extension AddNewPlayerToLeagueVC: UITableViewDelegate {
 		//TODO: Add Checkmark for selected cells
 	}
 }
-
-//MARK: - Fetch Results Controller Delegate
-extension AddNewPlayerToLeagueVC: NSFetchedResultsControllerDelegate { }
